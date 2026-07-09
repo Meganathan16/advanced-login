@@ -175,7 +175,7 @@ document.getElementById('signup-form-element').addEventListener('submit', async 
     if(!isStrongPassword(password)){ alert("Password must be 8+ chars, include 1 uppercase & 1 number"); return; }
 
     try{
-        const res = await fetch("http://localhost:5000/signup",{
+        const res = await fetch("https://advanced-login.onrender.com/signup", {
             method:"POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({name,email,password})
@@ -196,7 +196,7 @@ document.getElementById('signup-otp-form-element').addEventListener('submit', as
     e.preventDefault();
     const otp = document.getElementById('signup-otp').value;
     try{
-        const res = await fetch("http://localhost:5000/verify-signup-otp",{
+        const res = await fetch("https://YOUR-RENDER-APP.onrender.com/verify-signup-otp", {...})
             method:"POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({email: currentSignupEmail, otp})
@@ -217,7 +217,7 @@ document.getElementById('login-form-element').addEventListener('submit', async (
     const password = document.getElementById('login-password').value;
 
     try{
-        const res = await fetch("http://localhost:5000/login",{
+        const res = await fetch("https://YOUR-RENDER-APP.onrender.com/login", {...})
             method:"POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({email,password})
@@ -238,7 +238,7 @@ document.getElementById('login-otp-form-element').addEventListener('submit', asy
     const otp = document.getElementById('login-otp').value;
 
     try{
-        const res = await fetch("http://localhost:5000/verify-login-otp",{
+        const res = await fetch("https://YOUR-RENDER-APP.onrender.com/verify-login-otp", {...})
             method:"POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({email: currentLoginEmail, otp})
