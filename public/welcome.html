@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(-45deg,#4facfe,#00f2fe,#43e97b,#38f9d7);
+    background-size:400% 400%;
+    animation:bg 10s ease infinite;
+}
+
+@keyframes bg{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.card{
+    width:500px;
+    max-width:90%;
+    padding:40px;
+    border-radius:20px;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(20px);
+    text-align:center;
+    color:white;
+    box-shadow:0 10px 35px rgba(0,0,0,.3);
+}
+
+.icon{
+    font-size:80px;
+    animation:pop 1s ease;
+}
+
+@keyframes pop{
+    0%{transform:scale(0);}
+    80%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+}
+
+h1{
+    margin-top:20px;
+    font-size:40px;
+}
+
+p{
+    margin:20px 0;
+    font-size:18px;
+    line-height:1.6;
+}
+
+button{
+    padding:14px 35px;
+    border:none;
+    border-radius:30px;
+    background:#fff;
+    color:#007bff;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.08);
+    background:#007bff;
+    color:#fff;
+}
+
+.footer{
+    margin-top:25px;
+    font-size:14px;
+    opacity:.8;
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+<div class="icon">🎉</div>
+
+<h1>Welcome!</h1>
+
+<p>
+Your login was successful.
+<br><br>
+Welcome to our website.
+We're happy to have you here.
+</p>
+
+<button onclick="goDashboard()">
+Go to Dashboard
+</button>
+
+<div class="footer">
+© 2026 All Rights Reserved
+</div>
+
+</div>
+
+<script>
+
+function goDashboard(){
+
+    alert("Welcome to the Dashboard!");
+
+    // Change this later
+    // window.location.href="dashboard.html";
+
+}
+
+</script>
+
+</body>
+</html>
