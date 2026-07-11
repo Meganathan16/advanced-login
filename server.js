@@ -72,14 +72,14 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-transporter.verify((error, success) => {
+/*transporter.verify((error, success) => {
     if (error) {
         console.error("SMTP Verify Error:", error);
     } else {
         console.log("✅ SMTP Ready");
     }
 });
-
+*/
 // Test SMTP Connection
 
 // ==============================
