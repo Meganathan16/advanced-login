@@ -175,11 +175,17 @@ document.getElementById('signup-form-element').addEventListener('submit', async 
     if(!isStrongPassword(password)){ alert("Password must be 8+ chars, include 1 uppercase & 1 number"); return; }
 
     try{
-        const res = await fetch("https://advanced-login.onrender.com/signup", {
-            method:"POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({name,email,password})
-        });
+        const res = await fetch("/signup", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name,
+        email,
+        password
+    })
+});
         if(!res.ok) throw new Error("Server error");
         const data = await res.json();
         alert(data.message);
@@ -192,22 +198,35 @@ document.getElementById('signup-form-element').addEventListener('submit', async 
 });
 
 // ===== VERIFY SIGNUP OTP =====
-document.getElementById('signup-otp-form-element').addEventListener('submit', async (e)=>{
+document.getElementById('signup-otp-form-element').addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const otp = document.getElementById('signup-otp').value;
-    try{
-        const res = await fetch("https://YOUR-RENDER-APP.onrender.com/verify-signup-otp", {...})
-            method:"POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({email: currentSignupEmail, otp})
+
+    try {
+        const res = await fetch("/verify-signup-otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: currentSignupEmail,
+                otp: otp
+            })
         });
+
         const data = await res.json();
+
         alert(data.message);
-        if(res.ok){
-            signupOtpForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
+
+        if (res.ok) {
+            signupOtpForm.classList.add("hidden");
+            loginForm.classList.remove("hidden");
         }
-    } catch(err){ alert("Error: "+err.message); }
+
+    } catch (err) {
+        alert("Error: " + err.message);
+    }
 });
 
 // ===== LOGIN =====
@@ -217,11 +236,16 @@ document.getElementById('login-form-element').addEventListener('submit', async (
     const password = document.getElementById('login-password').value;
 
     try{
-        const res = await fetch("https://YOUR-RENDER-APP.onrender.com/login", {...})
-            method:"POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({email,password})
-        });
+        const res = await fetch("/login", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        email,
+        password
+    })
+});
         const data = await res.json();
         alert(data.message);
         if(res.ok){
@@ -233,23 +257,34 @@ document.getElementById('login-form-element').addEventListener('submit', async (
 });
 
 // ===== VERIFY LOGIN OTP =====
-document.getElementById('login-otp-form-element').addEventListener('submit', async (e)=>{
+document.getElementById('login-otp-form-element').addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const otp = document.getElementById('login-otp').value;
 
-    try{
-        const res = await fetch("https://YOUR-RENDER-APP.onrender.com/verify-login-otp", {...})
-            method:"POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({email: currentLoginEmail, otp})
+    try {
+        const res = await fetch("/verify-login-otp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: currentLoginEmail,
+                otp: otp
+            })
         });
+
         const data = await res.json();
+
         alert(data.message);
-        if(res.ok){
-            loginOtpForm.classList.add('hidden');
-            window.location.href = "welcome.html"; // redirect after login
+
+        if (res.ok) {
+            window.location.href = "/welcome.html";
         }
-    } catch(err){ alert("Error: "+err.message); }
+
+    } catch (err) {
+        alert("Error: " + err.message);
+    }
 });
 </script>
 </body>
