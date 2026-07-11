@@ -20,10 +20,11 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 // Middleware
+app.use(express.static("public"));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+
 
 // ==============================
 // MySQL Connection Pool
@@ -356,9 +357,7 @@ app.post("/verify-login-otp", async (req, res) => {
 // DEFAULT ROUTE
 // ==============================
 
-app.get("/", (req, res) => {
-    res.send("Advanced Login API is Running...");
-});
+
 
 // ==============================
 // START SERVER
