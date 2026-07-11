@@ -75,6 +75,15 @@ const transporter = nodemailer.createTransport({
         pass: process.env.BREVO_PASSWORD
     }
 });
+
+transporter.verify((error, success) => {
+    if (error) {
+        console.error("SMTP Verify Error:", error);
+    } else {
+        console.log("✅ SMTP Ready");
+    }
+});
+
 // Test SMTP Connection
 
 // ==============================
