@@ -27,17 +27,29 @@ const db = mysql.createPool({
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-// Test Database Connection
+// Create users table automatically
 (async () => {
     try {
-        const connection = await db.getConnection();
-        console.log("✅ MySQL Connected Successfully");
-        connection.release();
+        await db.execute(`
+            CREATE TABLE IF NOT EXISTS users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(150) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                is_verified TINYINT(1) DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        console.log("✅ Users table is ready");
     } catch (err) {
-        console.error("❌ Database Connection Error:", err.message);
+        console.error("❌ Error creating table:", err);
     }
 })();
 
