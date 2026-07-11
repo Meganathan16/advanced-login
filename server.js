@@ -4,13 +4,8 @@
 
 require("dotenv").config();
 
-console.log("DB_HOST:", process.env.DB_HOST);
-console.log("BREVO_EMAIL:", process.env.BREVO_EMAIL);
-console.log(
-  "BREVO_PASSWORD exists:",
-  !!process.env.BREVO_PASSWORD
-);
 
+const axios = require("axios");
 const express = require("express");
 const mysql = require("mysql2/promise");
 const cors = require("cors");
@@ -60,6 +55,42 @@ const db = mysql.createPool({
     }
 })();
 
+// 👇 ADD THE FUNCTION HERE
+async function sendOTP(email, otp, subject) {
+    try {
+        await axios.post(
+            "https://api.brevo.com/v3/smtp/email",
+            {
+                sender: {
+                    name: "Advanced Login",
+                    email: process.env.SENDER_EMAIL
+                },
+                to: [
+                    {
+                        email: email
+                    }
+                ],
+                subject: subject,
+                htmlContent: `
+                    <h2>Your OTP</h2>
+                    <h1>${otp}</h1>
+                    <p>This OTP is valid for 5 minutes.</p>
+                `
+            },
+            {
+                headers: {
+                    "api-key": process.env.BREVO_API_KEY,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        console.log("✅ OTP Email Sent");
+    } catch (err) {
+        console.error(err.response?.data || err.message);
+        throw err;
+    }
+}
 // ==============================
 // Brevo SMTP
 // ==============================
@@ -125,26 +156,7 @@ app.post("/signup", async (req, res) => {
         };
 
         // Send OTP Email
-        await apiInstance.sendTransacEmail({
-    sender: {
-        name: "Advanced Login",
-        email: "b.meganathan2007@gmail.com"
-    },
-
-    to: [
-        {
-            email: email
-        }
-    ],
-
-    subject: "Signup OTP",
-
-    htmlContent: `
-        <h2>Your OTP is</h2>
-        <h1>${otp}</h1>
-        <p>Valid for 5 minutes.</p>
-    `
-});
+       await sendOTP(email, otp, "Signup OTP");
 
         res.json({
             success: true,
@@ -280,25 +292,7 @@ app.post("/login", async (req, res) => {
         };
 
         // Send OTP
-        await apiInstance.sendTransacEmail({
-    sender: {
-        name: "Advanced Login",
-        email: "b.meganathan2007@gmail.com"
-    },
-
-    to: [
-        {
-            email: email
-        }
-    ],
-
-    subject: "Login OTP",
-
-    htmlContent: `
-        <h2>Your Login OTP</h2>
-        <h1>${otp}</h1>
-    `
-});
+await sendOTP(email, otp, "Login OTP");
 
         res.json({
             success: true,
