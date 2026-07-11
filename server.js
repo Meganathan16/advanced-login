@@ -4,6 +4,12 @@
 
 require("dotenv").config();
 
+console.log("DB_HOST:", process.env.DB_HOST);
+console.log("BREVO_EMAIL:", process.env.BREVO_EMAIL);
+console.log(
+  "BREVO_PASSWORD exists:",
+  !!process.env.BREVO_PASSWORD
+);
 
 const express = require("express");
 const mysql = require("mysql2/promise");
