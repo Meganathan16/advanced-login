@@ -15,7 +15,7 @@ const express = require("express");
 const mysql = require("mysql2/promise");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const nodemailer = require("nodemailer");
+const SibApiV3Sdk = require("@getbrevo/brevo");
 
 const app = express();
 
@@ -63,18 +63,12 @@ const db = mysql.createPool({
 // ==============================
 // Brevo SMTP
 // ==============================
-const transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 2525,
-    secure: false,
-    auth: {
-        user: process.env.BREVO_EMAIL,
-        pass: process.env.BREVO_PASSWORD
-    },
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000
-});
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+apiInstance.setApiKey(
+    SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey,
+    process.env.BREVO_API_KEY
+);
 
 transporter.verify((error, success) => {
     if (error) {
@@ -131,17 +125,26 @@ app.post("/signup", async (req, res) => {
         };
 
         // Send OTP Email
-        await transporter.sendMail({
-            from: '"My App" <b.meganathan2007@gmail.com>',
-            to: email,
-            subject: "Signup OTP Verification",
-            html: `
-                <h2>Signup Verification</h2>
-                <p>Your OTP is:</p>
-                <h1>${otp}</h1>
-                <p>This OTP is valid for a short time.</p>
-            `
-        });
+        await apiInstance.sendTransacEmail({
+    sender: {
+        name: "Advanced Login",
+        email: "b.meganathan2007@gmail.com"
+    },
+
+    to: [
+        {
+            email: email
+        }
+    ],
+
+    subject: "Signup OTP",
+
+    htmlContent: `
+        <h2>Your OTP is</h2>
+        <h1>${otp}</h1>
+        <p>Valid for 5 minutes.</p>
+    `
+});
 
         res.json({
             success: true,
@@ -277,17 +280,25 @@ app.post("/login", async (req, res) => {
         };
 
         // Send OTP
-        await transporter.sendMail({
-            from: '"My App" <b.meganathan2007@gmail.com>',
-            to: email,
-            subject: "Login OTP Verification",
-            html: `
-                <h2>Login Verification</h2>
-                <p>Your Login OTP is:</p>
-                <h1>${otp}</h1>
-                <p>Do not share this OTP with anyone.</p>
-            `
-        });
+        await apiInstance.sendTransacEmail({
+    sender: {
+        name: "Advanced Login",
+        email: "b.meganathan2007@gmail.com"
+    },
+
+    to: [
+        {
+            email: email
+        }
+    ],
+
+    subject: "Login OTP",
+
+    htmlContent: `
+        <h2>Your Login OTP</h2>
+        <h1>${otp}</h1>
+    `
+});
 
         res.json({
             success: true,
